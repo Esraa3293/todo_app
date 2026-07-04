@@ -12,9 +12,21 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
       iconTheme: IconThemeData(
-        size: AppConstants.actionsIconSize,
+        size: AppConstants.iconSize,
         color: Colors.white,
       ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      labelStyle: AppStyles.roboto12White().copyWith(color: Colors.black54),
+      floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.primaryColor,
@@ -23,6 +35,7 @@ class MyTheme {
       bodyLarge: AppStyles.poppins22White(),
       bodyMedium: AppStyles.poppins18Primary(),
       bodySmall: AppStyles.roboto12Black(),
+      displayMedium: AppStyles.poppins18Black(),
     ),
     // colorScheme: const ColorScheme(
     //   brightness: Brightness.light,
@@ -36,6 +49,7 @@ class MyTheme {
     //   onError: Colors.white,
     // ),
     scaffoldBackgroundColor: AppColors.lightGreenColor,
+    iconTheme: IconThemeData(color: Colors.white, size: AppConstants.iconSize),
     dividerTheme: const DividerThemeData(
       color: AppColors.primaryColor,
       thickness: AppConstants.dividerThickness,
@@ -47,7 +61,6 @@ class MyTheme {
       // لضمان قص الـ ListView مع تدويرة حواف الـ Card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
-        side: const BorderSide(color: AppColors.primaryColor),
       ),
       margin: const EdgeInsets.all(12.0),
     ),
@@ -58,11 +71,11 @@ class MyTheme {
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.white,
+      elevation: AppConstants.bottomNavElevation,
+      backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return IconThemeData(
           color: states.contains(WidgetState.selected)
@@ -70,6 +83,13 @@ class MyTheme {
               : AppColors.grayColor,
         );
       }),
+    ),
+    bottomAppBarTheme: BottomAppBarThemeData(shape: CircularNotchedRectangle()),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      iconSize: AppConstants.iconSize,
+      shape: CircleBorder(side: BorderSide(color: Colors.white, width: 3)),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: Colors.white,
     ),
   );
   static ThemeData darkTheme = ThemeData(
@@ -79,7 +99,7 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
       iconTheme: IconThemeData(
-        size: AppConstants.actionsIconSize,
+        size: AppConstants.iconSize,
         color: Colors.black,
       ),
     ),
@@ -137,6 +157,13 @@ class MyTheme {
               : AppColors.grayColor,
         );
       }),
+    ),
+    bottomAppBarTheme: BottomAppBarThemeData(shape: CircularNotchedRectangle()),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      iconSize: AppConstants.iconSize,
+      shape: CircleBorder(side: BorderSide(color: Colors.white, width: 3)),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: Colors.white,
     ),
   );
 }
