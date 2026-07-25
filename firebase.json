@@ -3,17 +3,17 @@
     "platforms": {
       "android": {
         "default": {
-          "projectId": "todo-app-2377c",
-          "appId": "1:855839990691:android:904871a76b71999fc1b016",
+          "projectId": "todo-app-6b608",
+          "appId": "1:245795659576:android:a150a7fca3817519d42bcd",
           "fileOutput": "android/app/google-services.json"
         }
       },
       "dart": {
         "lib/firebase_options.dart": {
-          "projectId": "todo-app-2377c",
+          "projectId": "todo-app-6b608",
           "configurations": {
-            "android": "1:855839990691:android:904871a76b71999fc1b016",
-            "ios": "1:855839990691:ios:981f14c0b79ef76ec1b016"
+            "android": "1:245795659576:android:a150a7fca3817519d42bcd",
+            "ios": "1:245795659576:ios:0c2d15b1cd7c4737d42bcd"
           }
         }
       }

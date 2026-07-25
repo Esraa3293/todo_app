@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:todo/models/task_model.dart';
+import 'package:todo/shared/network/firebase/firebase_functions.dart';
 import 'package:todo/shared/styles/app_colors.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -10,7 +12,9 @@ class AddTaskBottomSheet extends StatefulWidget {
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
   var formKey = GlobalKey<FormState>();
-  String selectedDate = DateTime.now().toString().substring(0, 10);
+  var selectedDate = DateUtils.dateOnly(DateTime.now());
+  var titleController = TextEditingController();
+  var descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +34,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               SizedBox(height: 25),
               TextFormField(
                 style: Theme.of(context).textTheme.displayMedium,
+                controller: titleController,
                 textInputAction: TextInputAction.next,
                 decoration: InputDecoration(label: Text("Task Title")),
                 cursorColor: AppColors.primaryColor,
@@ -45,6 +50,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               SizedBox(height: 15),
               TextFormField(
                 style: Theme.of(context).textTheme.displayMedium,
+                controller: descriptionController,
                 maxLines: 3,
                 decoration: InputDecoration(label: Text("Task Description")),
                 cursorColor: AppColors.primaryColor,
@@ -71,7 +77,7 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
                   chooseDate();
                 },
                 child: Text(
-                  selectedDate,
+                  selectedDate.toString().substring(0, 10),
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: AppColors.primaryColor,
                   ),
@@ -81,7 +87,16 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               ElevatedButton(
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    print("task added");
+                    TaskModel taskModel = TaskModel(
+                      title: titleController.text,
+                      description: descriptionController.text,
+                      date: selectedDate.millisecondsSinceEpoch,
+                      status: false,
+                    );
+                    FirebaseFunctions.addTasksToFireStore(taskModel);
+                    if (context.mounted) {
+                      Navigator.pop(context);
+                    }
                   }
                 },
                 child: Text("Add Task"),
@@ -97,10 +112,10 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
     DateTime? selected = await showDatePicker(
       context: context,
       firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 3)),
+      lastDate: DateTime.now().add(Duration(days: 365 * 3)),
     );
     if (selected != null) {
-      selectedDate = selected.toString().substring(0, 10);
+      selectedDate = DateUtils.dateOnly(selected);
       setState(() {});
     }
   }
