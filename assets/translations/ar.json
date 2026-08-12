@@ -1,0 +1,18 @@
+{
+  "toDoApp": "قائمة مهام",
+  "done": "تم",
+  "delete": "حذف",
+  "edit": "تعديل",
+  "addTask": "اضف مهمة",
+  "addNewTask": "اضف مهمة جديدة",
+  "noTasks": "لا يوجد مهام",
+  "selectDate": "اختر تاريخ",
+  "taskTitle": "العنوان",
+  "taskDescription": "التفاصيل",
+  "language": "اللغة",
+  "english": "الانجليزية",
+  "arabic": "العربية",
+  "mode": "الوضع",
+  "light": "ساطع",
+  "dark": "داكن"
+}

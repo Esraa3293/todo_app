@@ -1,0 +1,18 @@
+{
+  "toDoApp": "To Do App",
+  "done": "Done!",
+  "delete": "Delete",
+  "edit": "Edit",
+  "addTask": "Add Task",
+  "addNewTask": "Add new task",
+  "noTasks": "No Tasks",
+  "selectDate": "Select Date",
+  "taskTitle": "Task Title",
+  "taskDescription": "Task Description",
+  "language": "Language",
+  "english": "English",
+  "arabic": "Arabic",
+  "mode": "Mode",
+  "light": "Light",
+  "dark": "Dark"
+}
