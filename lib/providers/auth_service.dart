@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:todo/models/user_model.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 
-class MyProvider extends ChangeNotifier {
+class AuthService extends ChangeNotifier {
   UserModel? myUser;
 
   Future<void> initUser() async {

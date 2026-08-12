@@ -13,10 +13,25 @@
           "projectId": "todo-app-6b608",
           "configurations": {
             "android": "1:245795659576:android:a150a7fca3817519d42bcd",
-            "ios": "1:245795659576:ios:0c2d15b1cd7c4737d42bcd"
+            "ios": "1:245795659576:ios:0c2d15b1cd7c4737d42bcd",
+            "web": "1:245795659576:web:5414c7abc1f8e100d42bcd"
           }
         }
       }
     }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
   }
 }

@@ -25,10 +25,12 @@ class FirebaseFunctions {
   static Stream<QuerySnapshot<TaskModel>> getTasksFromFireStore(DateTime date) {
     var collection = getTasksCollection();
     return collection
+        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
         .where(
           "date",
           isEqualTo: DateUtils.dateOnly(date).millisecondsSinceEpoch,
         )
+        .orderBy('dateTime')
         .snapshots();
   }
 

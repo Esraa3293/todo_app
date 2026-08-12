@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/home_layout/home_layout.dart';
-import 'package:todo/providers/my_provider.dart';
+import 'package:todo/providers/auth_service.dart';
 import 'package:todo/screens/login.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 import 'package:todo/shared/styles/app_colors.dart';
@@ -121,7 +121,7 @@ class CreateAccount extends StatelessWidget {
                           emailController.text,
                           passwordController.text,
                           (user) {
-                            Provider.of<MyProvider>(
+                            Provider.of<AuthService>(
                               context,
                               listen: false,
                             ).updateUser(user);

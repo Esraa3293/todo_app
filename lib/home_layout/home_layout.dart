@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo/providers/my_provider.dart';
+import 'package:todo/providers/auth_service.dart';
 import 'package:todo/screens/login.dart';
 import 'package:todo/screens/settings.dart';
 import 'package:todo/screens/tasks.dart';
@@ -23,15 +24,15 @@ class _HomeLayoutState extends State<HomeLayout> {
 
   @override
   Widget build(BuildContext context) {
-    var provider = Provider.of<MyProvider>(context);
+    var provider = Provider.of<AuthService>(context);
 
     return Scaffold(
       extendBody: true,
       appBar: AppBar(
         title: Text(
           provider.myUser != null
-              ? "Todo App ${provider.myUser!.name}"
-              : "Todo App",
+              ? "${context.tr('toDoApp')} ${provider.myUser!.name}"
+              : context.tr('toDoApp'),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         actions: [
