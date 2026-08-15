@@ -39,21 +39,17 @@ class MyTheme {
     ),
     // colorScheme: const ColorScheme(
     //   brightness: Brightness.light,
-    //   primary: lightPrimary,
-    //   onPrimary: whiteColor,
-    //   secondary: blackColor,
-    //   onSecondary: whiteColor,
-    //   surface: whiteColor,
-    //   onSurface: blackColor,
+    //   primary: AppColors.primaryColor,
+    //   onPrimary: Colors.white,
+    //   secondary: AppColors.greenColor,
+    //   onSecondary: AppColors.grayColor,
+    //   surface: AppColors.lightGreenColor,
+    //   onSurface: AppColors.primaryColor,
     //   error: Colors.red,
     //   onError: Colors.white,
     // ),
     scaffoldBackgroundColor: AppColors.lightGreenColor,
     iconTheme: IconThemeData(color: Colors.white, size: AppConstants.iconSize),
-    dividerTheme: const DividerThemeData(
-      color: AppColors.primaryColor,
-      thickness: AppConstants.dividerThickness,
-    ),
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       color: Colors.white,
@@ -103,6 +99,18 @@ class MyTheme {
         color: Colors.black,
       ),
     ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      labelStyle: AppStyles.roboto12White(),
+      floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
+    ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.primaryColor,
     ),
@@ -110,6 +118,7 @@ class MyTheme {
       bodyLarge: AppStyles.poppins22Black(),
       bodyMedium: AppStyles.poppins18Primary(),
       bodySmall: AppStyles.roboto12White(),
+      displayMedium: AppStyles.poppins18White(),
     ),
     // colorScheme: const ColorScheme(
     //   brightness: Brightness.dark,
@@ -123,10 +132,6 @@ class MyTheme {
     //   onError: Colors.white,
     // ),
     scaffoldBackgroundColor: AppColors.darkBgColor,
-    dividerTheme: const DividerThemeData(
-      // color: darkPrimary,
-      thickness: AppConstants.dividerThickness,
-    ),
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       // color: darkSecondary,
@@ -140,12 +145,13 @@ class MyTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        // backgroundColor: darkPrimary,
-        // foregroundColor: blackColor,
+        backgroundColor: AppColors.primaryColor,
+        foregroundColor: Colors.white,
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.black,
+      elevation: AppConstants.bottomNavElevation,
+      backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       indicatorColor: Colors.transparent,
