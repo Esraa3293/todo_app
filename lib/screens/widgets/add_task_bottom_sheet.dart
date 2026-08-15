@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/task_model.dart';
-import 'package:todo/shared/network/firebase/firebase_functions.dart';
+import 'package:todo/providers/task_provider.dart';
 import 'package:todo/shared/styles/app_colors.dart';
 
 class AddTaskBottomSheet extends StatefulWidget {
@@ -11,32 +14,37 @@ class AddTaskBottomSheet extends StatefulWidget {
 }
 
 class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
-  var formKey = GlobalKey<FormState>();
-  var selectedDate = DateUtils.dateOnly(DateTime.now());
-  var titleController = TextEditingController();
-  var descriptionController = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<TaskProvider>(context);
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: SingleChildScrollView(
         child: Form(
-          key: formKey,
+          key: provider.formKey,
           child: Column(
             children: [
               Text(
-                "Add new task",
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium!.copyWith(color: Colors.black),
-              ),
+                'addNewTask',
+                style: Theme
+                    .of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(
+                  color: Theme
+                      .of(context)
+                      .brightness == Brightness.light
+                      ? Colors.black
+                      : Colors.white,
+                ),
+              ).tr(),
               SizedBox(height: 25),
               TextFormField(
                 style: Theme.of(context).textTheme.displayMedium,
-                controller: titleController,
+                controller: provider.titleController,
                 textInputAction: TextInputAction.next,
-                decoration: InputDecoration(label: Text("Task Title")),
+                decoration: InputDecoration(label: Text('taskTitle').tr()),
                 cursorColor: AppColors.primaryColor,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -50,9 +58,11 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               SizedBox(height: 15),
               TextFormField(
                 style: Theme.of(context).textTheme.displayMedium,
-                controller: descriptionController,
+                controller: provider.descriptionController,
                 maxLines: 3,
-                decoration: InputDecoration(label: Text("Task Description")),
+                decoration: InputDecoration(
+                  label: Text('taskDescription').tr(),
+                ),
                 cursorColor: AppColors.primaryColor,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -65,19 +75,27 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               SizedBox(
                 width: double.infinity,
                 child: Text(
-                  "Select Date",
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium!.copyWith(color: Colors.black),
-                ),
+                  'selectDate',
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(
+                    color: Theme
+                        .of(context)
+                        .brightness == Brightness.light
+                        ? Colors.black
+                        : Colors.white,
+                  ),
+                ).tr(),
               ),
               SizedBox(height: 15),
               InkWell(
                 onTap: () {
-                  chooseDate();
+                  provider.chooseDate(context);
                 },
                 child: Text(
-                  selectedDate.toString().substring(0, 10),
+                  provider.selectedDate.toString().substring(0, 10),
                   style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                     color: AppColors.primaryColor,
                   ),
@@ -86,37 +104,29 @@ class _AddTaskBottomSheetState extends State<AddTaskBottomSheet> {
               SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
-                  if (formKey.currentState!.validate()) {
+                  if (provider.formKey.currentState!.validate()) {
                     TaskModel taskModel = TaskModel(
-                      title: titleController.text,
-                      description: descriptionController.text,
-                      date: selectedDate.millisecondsSinceEpoch,
+                      title: provider.titleController.text,
+                      description: provider.descriptionController.text,
+                      date: provider.selectedDate.millisecondsSinceEpoch,
                       status: false,
+                      userId: FirebaseAuth.instance.currentUser!.uid,
+                      dateTime: DateTime
+                          .now()
+                          .millisecondsSinceEpoch,
                     );
-                    FirebaseFunctions.addTasksToFireStore(taskModel);
+                    provider.addTask(taskModel);
                     if (context.mounted) {
                       Navigator.pop(context);
                     }
                   }
                 },
-                child: Text("Add Task"),
+                child: Text('addTask').tr(),
               ),
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> chooseDate() async {
-    DateTime? selected = await showDatePicker(
-      context: context,
-      firstDate: DateTime.now(),
-      lastDate: DateTime.now().add(Duration(days: 365 * 3)),
-    );
-    if (selected != null) {
-      selectedDate = DateUtils.dateOnly(selected);
-      setState(() {});
-    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:calendar_timeline/calendar_timeline.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/screens/widgets/task_item.dart';
@@ -47,7 +48,7 @@ class _TasksTabState extends State<TasksTab> {
             List<TaskModel> tasks =
                 snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
             if (tasks.isEmpty) {
-              return Center(child: Text("No Tasks"));
+              return Center(child: Text("noTasks".tr()));
             }
             return Expanded(
               child: ListView.builder(

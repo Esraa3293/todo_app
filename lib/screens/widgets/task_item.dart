@@ -1,6 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:provider/provider.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/providers/task_provider.dart';
 import 'package:todo/screens/edit_task.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 import 'package:todo/shared/styles/app_colors.dart';
@@ -12,6 +15,8 @@ class TaskItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var provider = Provider.of<TaskProvider>(context);
+
     return Card(
       child: Slidable(
         startActionPane: ActionPane(
@@ -20,19 +25,19 @@ class TaskItem extends StatelessWidget {
             SlidableAction(
               backgroundColor: Colors.red,
               icon: Icons.delete,
-              label: "Delete",
+              label: context.tr('delete'),
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(15),
                 bottomLeft: Radius.circular(15),
               ),
               onPressed: (context) {
-                FirebaseFunctions.deleteTask(taskModel.id);
+                provider.deleteTask(taskModel.id);
               },
             ),
             SlidableAction(
               backgroundColor: Colors.blue,
               icon: Icons.edit,
-              label: "Edit",
+              label: context.tr('edit'),
               onPressed: (context) {
                 Navigator.pushNamed(
                   context,
@@ -79,11 +84,11 @@ class TaskItem extends StatelessWidget {
               Spacer(),
               taskModel.status
                   ? Text(
-                      "Done!",
+                'done',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                         color: AppColors.greenColor,
                       ),
-                    )
+              ).tr()
                   : InkWell(
                       onTap: () {
                         taskModel.status = true;
