@@ -1,10 +1,11 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/task_model.dart';
+import 'package:todo/providers/auth_service.dart';
 import 'package:todo/providers/edit_task_provider.dart';
 import 'package:todo/providers/task_provider.dart';
-import 'package:todo/shared/styles/app_colors.dart';
 
 class EditTaskScreen extends StatelessWidget {
   static const String routeName = 'editTaskScreen';
@@ -14,21 +15,24 @@ class EditTaskScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var task = ModalRoute.of(context)?.settings.arguments as TaskModel;
+    var provider = Provider.of<AuthService>(context);
 
     return Scaffold(
-      backgroundColor: Theme
-          .of(context)
-          .brightness == Brightness.light
-          ? AppColors.lightGreenColor
-          : AppColors.darkBgColor,
+      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+
       appBar: AppBar(
-        title: Text("Todo App", style: Theme.of(context).textTheme.bodyLarge),
+        title: Text(
+          provider.myUser != null
+              ? "${provider.myUser!.name}'s ${context.tr('dailyTasks')}"
+              : context.tr('dailyTasks'),
+          style: Theme.of(context).textTheme.bodyLarge,
+        ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(8.0.r),
         child: Card(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: EdgeInsets.all(8.0.r),
             child: ChangeNotifierProvider(
               create: (context) => EditTaskProvider(task),
               builder: (context, child) {
@@ -40,9 +44,7 @@ class EditTaskScreen extends StatelessWidget {
                     Text(
                       "Edit Task",
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .brightness == Brightness.light
+                        color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black
                             : Colors.white,
                       ),
@@ -50,9 +52,7 @@ class EditTaskScreen extends StatelessWidget {
                     SizedBox(height: 50.h),
                     TextField(
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .brightness == Brightness.light
+                        color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black
                             : Colors.white,
                       ),
@@ -62,9 +62,7 @@ class EditTaskScreen extends StatelessWidget {
                     SizedBox(height: 30.h),
                     TextField(
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .brightness == Brightness.light
+                        color: Theme.of(context).brightness == Brightness.light
                             ? Colors.black
                             : Colors.white,
                       ),
@@ -80,9 +78,7 @@ class EditTaskScreen extends StatelessWidget {
                         "Task Date",
                         style: TextStyle(
                           color:
-                          Theme
-                              .of(context)
-                              .brightness == Brightness.light
+                              Theme.of(context).brightness == Brightness.light
                               ? Colors.black
                               : Colors.white,
                         ),
@@ -97,10 +93,12 @@ class EditTaskScreen extends StatelessWidget {
                         DateTime.fromMillisecondsSinceEpoch(
                           provider.task.date,
                         ).toString().substring(0, 10),
-                        style: TextStyle(color: AppColors.primaryColor),
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 20.h),
                     ElevatedButton(
                       onPressed: () {
                         provider.task.title = provider.titleController.text;

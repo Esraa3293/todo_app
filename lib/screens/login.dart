@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/home_layout/home_layout.dart';
 import 'package:todo/providers/auth_service.dart';
 import 'package:todo/screens/create_account.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
-import 'package:todo/shared/styles/app_colors.dart';
 
 class LoginScreen extends StatelessWidget {
   static const String routeName = "login";
@@ -17,30 +17,36 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? Colors.white
+          : Theme.of(context).colorScheme.onPrimary,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(16.0.r),
             child: Form(
               key: formKey,
               child: Column(
                 children: [
                   Image.asset("assets/images/login_bg.png", fit: BoxFit.fill),
-                  SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(
                     "Login",
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: AppColors.primaryColor,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  SizedBox(height: 20),
+                  SizedBox(height: 20.h),
                   TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(label: Text("Email address")),
                     keyboardType: TextInputType.emailAddress,
-                    style: TextStyle(color: Colors.black54),
-                    cursorColor: AppColors.primaryColor,
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black54
+                          : Colors.white,
+                    ),
+                    cursorColor: Theme.of(context).colorScheme.primary,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return "Please enter email";
@@ -54,12 +60,16 @@ class LoginScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(label: Text("Password")),
-                    style: TextStyle(color: Colors.black54),
-                    cursorColor: AppColors.primaryColor,
+                    style: TextStyle(
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.black54
+                          : Colors.white,
+                    ),
+                    cursorColor: Theme.of(context).colorScheme.primary,
                     obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -77,7 +87,7 @@ class LoginScreen extends StatelessWidget {
                       return null;
                     },
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 10.h),
                   ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
@@ -132,7 +142,9 @@ class LoginScreen extends StatelessWidget {
                         },
                         child: Text(
                           "Create Account",
-                          style: TextStyle(color: Colors.blue),
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
                         ),
                       ),
                     ],

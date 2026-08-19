@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:todo/shared/styles/app_colors.dart';
 
 class SettingsItem extends StatelessWidget {
   final String title;
@@ -17,7 +16,7 @@ class SettingsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: EdgeInsets.all(20.0.r),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -38,7 +37,7 @@ class SettingsItem extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).brightness == Brightness.light
                     ? Colors.white
-                    : AppColors.darkPrimaryColor,
+                    : Theme.of(context).colorScheme.surface,
               ),
               child: Text(option),
             ),

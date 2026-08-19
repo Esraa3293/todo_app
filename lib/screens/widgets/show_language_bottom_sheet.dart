@@ -8,7 +8,7 @@ class ShowLanguageBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0.r),
       child: Column(
         children: [
           InkWell(
@@ -37,7 +37,7 @@ class ShowLanguageBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 20.h),
           InkWell(
             onTap: () {
               context.setLocale(Locale("ar"));
@@ -68,8 +68,4 @@ class ShowLanguageBottomSheet extends StatelessWidget {
       ),
     );
   }
-
-  // void changeLanguage(String language) {
-  //   language == "English" ? Locale("en") : Locale("ar");
-  // }
 }

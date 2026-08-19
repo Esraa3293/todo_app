@@ -31,8 +31,8 @@ class _HomeLayoutState extends State<HomeLayout> {
       appBar: AppBar(
         title: Text(
           provider.myUser != null
-              ? "${context.tr('toDoApp')} ${provider.myUser!.name}"
-              : context.tr('toDoApp'),
+              ? "${provider.myUser!.name}'s ${context.tr('dailyTasks')}"
+              : context.tr('dailyTasks'),
           style: Theme.of(context).textTheme.bodyLarge,
         ),
         actions: [

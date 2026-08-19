@@ -12,7 +12,7 @@ class ShowModeBottomSheet extends StatelessWidget {
     var provider = Provider.of<SettingsProvider>(context);
 
     return Padding(
-      padding: const EdgeInsets.all(16.0),
+      padding: EdgeInsets.all(16.0.r),
       child: Column(
         children: [
           InkWell(
@@ -41,7 +41,7 @@ class ShowModeBottomSheet extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 10.h),
+          SizedBox(height: 20.h),
           InkWell(
             onTap: () {
               provider.changeTheme(ThemeMode.dark);

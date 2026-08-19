@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/shared/components/constants.dart';
 import 'package:todo/shared/styles/text_styles.dart';
 
@@ -19,11 +20,11 @@ class MyTheme {
     inputDecorationTheme: InputDecorationTheme(
       focusedBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.primaryColor),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(18.r),
       ),
       enabledBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppColors.primaryColor),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(18.r),
       ),
       labelStyle: AppStyles.roboto12White().copyWith(color: Colors.black54),
       floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
@@ -37,17 +38,17 @@ class MyTheme {
       bodySmall: AppStyles.roboto12Black(),
       displayMedium: AppStyles.poppins18Black(),
     ),
-    // colorScheme: const ColorScheme(
-    //   brightness: Brightness.light,
-    //   primary: AppColors.primaryColor,
-    //   onPrimary: Colors.white,
-    //   secondary: AppColors.greenColor,
-    //   onSecondary: AppColors.grayColor,
-    //   surface: AppColors.lightGreenColor,
-    //   onSurface: AppColors.primaryColor,
-    //   error: Colors.red,
-    //   onError: Colors.white,
-    // ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.light,
+      primary: AppColors.primaryColor,
+      onPrimary: AppColors.lightGreenColor,
+      secondary: AppColors.greenColor,
+      onSecondary: AppColors.grayColor,
+      surface: Colors.white,
+      onSurface: Colors.black,
+      error: Colors.red,
+      onError: Colors.white,
+    ),
     scaffoldBackgroundColor: AppColors.lightGreenColor,
     iconTheme: IconThemeData(color: Colors.white, size: AppConstants.iconSize),
     cardTheme: CardThemeData(
@@ -120,17 +121,17 @@ class MyTheme {
       bodySmall: AppStyles.roboto12White(),
       displayMedium: AppStyles.poppins18White(),
     ),
-    // colorScheme: const ColorScheme(
-    //   brightness: Brightness.dark,
-    //   primary: darkPrimary,
-    //   onPrimary: darkSecondary,
-    //   secondary: darkPrimary,
-    //   onSecondary: darkSecondary,
-    //   surface: darkSecondary,
-    //   onSurface: darkPrimary,
-    //   error: Colors.red,
-    //   onError: Colors.white,
-    // ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.dark,
+      primary: AppColors.primaryColor,
+      onPrimary: AppColors.darkBgColor,
+      secondary: AppColors.greenColor,
+      onSecondary: AppColors.grayColor,
+      surface: AppColors.darkPrimaryColor,
+      onSurface: Colors.white,
+      error: Colors.red,
+      onError: Colors.white,
+    ),
     scaffoldBackgroundColor: AppColors.darkBgColor,
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
@@ -155,7 +156,6 @@ class MyTheme {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return IconThemeData(
           color: states.contains(WidgetState.selected)

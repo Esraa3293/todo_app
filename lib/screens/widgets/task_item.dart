@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/providers/task_provider.dart';
 import 'package:todo/screens/edit_task.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
-import 'package:todo/shared/styles/app_colors.dart';
 
 class TaskItem extends StatelessWidget {
   final TaskModel taskModel;
@@ -27,8 +27,8 @@ class TaskItem extends StatelessWidget {
               icon: Icons.delete,
               label: context.tr('delete'),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15),
-                bottomLeft: Radius.circular(15),
+                topLeft: Radius.circular(15.r),
+                bottomLeft: Radius.circular(15.r),
               ),
               onPressed: (context) {
                 provider.deleteTask(taskModel.id);
@@ -49,17 +49,17 @@ class TaskItem extends StatelessWidget {
           ],
         ),
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0.r),
           child: Row(
             children: [
               Container(
-                height: 100,
-                width: 5,
+                height: 100.h,
+                width: 5.w,
                 color: taskModel.status
-                    ? AppColors.greenColor
-                    : AppColors.primaryColor,
+                    ? Theme.of(context).colorScheme.secondary
+                    : Theme.of(context).colorScheme.primary,
               ),
-              SizedBox(width: MediaQuery.of(context).size.width * 0.05),
+              SizedBox(width: 15.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -68,7 +68,7 @@ class TaskItem extends StatelessWidget {
                       taskModel.title,
                       style: taskModel.status
                           ? Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: AppColors.greenColor,
+                              color: Theme.of(context).colorScheme.secondary,
                             )
                           : Theme.of(context).textTheme.bodyMedium,
                     ),
@@ -86,7 +86,7 @@ class TaskItem extends StatelessWidget {
                   ? Text(
                 'done',
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: AppColors.greenColor,
+                        color: Theme.of(context).colorScheme.secondary,
                       ),
               ).tr()
                   : InkWell(
@@ -96,12 +96,12 @@ class TaskItem extends StatelessWidget {
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: 18,
-                          vertical: 3,
+                          horizontal: 18.w,
+                          vertical: 3.h,
                         ),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: AppColors.primaryColor,
+                          borderRadius: BorderRadius.circular(10.r),
+                          color: Theme.of(context).colorScheme.primary,
                         ),
                         child: Icon(Icons.done),
                       ),
