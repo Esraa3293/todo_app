@@ -14,5 +14,14 @@
   "arabic": "العربية",
   "mode": "الوضع",
   "light": "ساطع",
-  "dark": "داكن"
+  "dark": "داكن",
+  "login": "تسجيل دخول",
+  "createAccount": "انشاء حساب",
+  "submit": "حفظ",
+  "emailAddress": "البريد الالكتروني",
+  "password": "كلمة المرور",
+  "name": "الاسم",
+  "age": "العمر",
+  "haveAnAccount?": "لديك حساب ؟",
+  "dontHaveAnAccount?": "ليس لديك حساب ؟"
 }

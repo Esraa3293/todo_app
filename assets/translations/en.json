@@ -14,5 +14,14 @@
   "arabic": "Arabic",
   "mode": "Mode",
   "light": "Light",
-  "dark": "Dark"
+  "dark": "Dark",
+  "login": "Login",
+  "createAccount": "Create Account",
+  "submit": "Submit",
+  "emailAddress": "Email address",
+  "password": "Password",
+  "name": "Name",
+  "age": "Age",
+  "haveAnAccount?": "Have an account?",
+  "dontHaveAnAccount?": "Don't have an account?"
 }
