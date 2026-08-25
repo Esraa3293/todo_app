@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:todo/shared/components/constants.dart';
 import 'package:todo/shared/styles/text_styles.dart';
 
@@ -12,9 +13,21 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
       iconTheme: IconThemeData(
-        size: AppConstants.actionsIconSize,
+        size: AppConstants.iconSize,
         color: Colors.white,
       ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18.r),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18.r),
+      ),
+      labelStyle: AppStyles.roboto12White().copyWith(color: Colors.black54),
+      floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.primaryColor,
@@ -23,23 +36,21 @@ class MyTheme {
       bodyLarge: AppStyles.poppins22White(),
       bodyMedium: AppStyles.poppins18Primary(),
       bodySmall: AppStyles.roboto12Black(),
+      displayMedium: AppStyles.poppins18Black(),
     ),
-    // colorScheme: const ColorScheme(
-    //   brightness: Brightness.light,
-    //   primary: lightPrimary,
-    //   onPrimary: whiteColor,
-    //   secondary: blackColor,
-    //   onSecondary: whiteColor,
-    //   surface: whiteColor,
-    //   onSurface: blackColor,
-    //   error: Colors.red,
-    //   onError: Colors.white,
-    // ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.light,
+      primary: AppColors.primaryColor,
+      onPrimary: AppColors.lightGreenColor,
+      secondary: AppColors.greenColor,
+      onSecondary: AppColors.grayColor,
+      surface: Colors.white,
+      onSurface: Colors.black,
+      error: Colors.red,
+      onError: Colors.white,
+    ),
     scaffoldBackgroundColor: AppColors.lightGreenColor,
-    dividerTheme: const DividerThemeData(
-      color: AppColors.primaryColor,
-      thickness: AppConstants.dividerThickness,
-    ),
+    iconTheme: IconThemeData(color: Colors.white, size: AppConstants.iconSize),
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       color: Colors.white,
@@ -47,7 +58,6 @@ class MyTheme {
       // لضمان قص الـ ListView مع تدويرة حواف الـ Card
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppConstants.cardBorderRadius),
-        side: const BorderSide(color: AppColors.primaryColor),
       ),
       margin: const EdgeInsets.all(12.0),
     ),
@@ -58,11 +68,11 @@ class MyTheme {
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.white,
+      elevation: AppConstants.bottomNavElevation,
+      backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return IconThemeData(
           color: states.contains(WidgetState.selected)
@@ -70,6 +80,13 @@ class MyTheme {
               : AppColors.grayColor,
         );
       }),
+    ),
+    bottomAppBarTheme: BottomAppBarThemeData(shape: CircularNotchedRectangle()),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      iconSize: AppConstants.iconSize,
+      shape: CircleBorder(side: BorderSide(color: Colors.white, width: 3)),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: Colors.white,
     ),
   );
   static ThemeData darkTheme = ThemeData(
@@ -79,9 +96,21 @@ class MyTheme {
     appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.primaryColor,
       iconTheme: IconThemeData(
-        size: AppConstants.actionsIconSize,
+        size: AppConstants.iconSize,
         color: Colors.black,
       ),
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppColors.primaryColor),
+        borderRadius: BorderRadius.circular(18),
+      ),
+      labelStyle: AppStyles.roboto12White(),
+      floatingLabelStyle: TextStyle(color: AppColors.primaryColor),
     ),
     progressIndicatorTheme: const ProgressIndicatorThemeData(
       color: AppColors.primaryColor,
@@ -90,23 +119,20 @@ class MyTheme {
       bodyLarge: AppStyles.poppins22Black(),
       bodyMedium: AppStyles.poppins18Primary(),
       bodySmall: AppStyles.roboto12White(),
+      displayMedium: AppStyles.poppins18White(),
     ),
-    // colorScheme: const ColorScheme(
-    //   brightness: Brightness.dark,
-    //   primary: darkPrimary,
-    //   onPrimary: darkSecondary,
-    //   secondary: darkPrimary,
-    //   onSecondary: darkSecondary,
-    //   surface: darkSecondary,
-    //   onSurface: darkPrimary,
-    //   error: Colors.red,
-    //   onError: Colors.white,
-    // ),
+    colorScheme: const ColorScheme(
+      brightness: Brightness.dark,
+      primary: AppColors.primaryColor,
+      onPrimary: AppColors.darkBgColor,
+      secondary: AppColors.greenColor,
+      onSecondary: AppColors.grayColor,
+      surface: AppColors.darkPrimaryColor,
+      onSurface: Colors.white,
+      error: Colors.red,
+      onError: Colors.white,
+    ),
     scaffoldBackgroundColor: AppColors.darkBgColor,
-    dividerTheme: const DividerThemeData(
-      // color: darkPrimary,
-      thickness: AppConstants.dividerThickness,
-    ),
     cardTheme: CardThemeData(
       elevation: AppConstants.cardElevation,
       // color: darkSecondary,
@@ -120,16 +146,16 @@ class MyTheme {
     ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        // backgroundColor: darkPrimary,
-        // foregroundColor: blackColor,
+        backgroundColor: AppColors.primaryColor,
+        foregroundColor: Colors.white,
       ),
     ),
     navigationBarTheme: NavigationBarThemeData(
-      backgroundColor: Colors.black,
+      elevation: AppConstants.bottomNavElevation,
+      backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       indicatorColor: Colors.transparent,
-      labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
       iconTheme: WidgetStateProperty.resolveWith((states) {
         return IconThemeData(
           color: states.contains(WidgetState.selected)
@@ -137,6 +163,13 @@ class MyTheme {
               : AppColors.grayColor,
         );
       }),
+    ),
+    bottomAppBarTheme: BottomAppBarThemeData(shape: CircularNotchedRectangle()),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      iconSize: AppConstants.iconSize,
+      shape: CircleBorder(side: BorderSide(color: Colors.white, width: 3)),
+      backgroundColor: AppColors.primaryColor,
+      foregroundColor: Colors.white,
     ),
   );
 }

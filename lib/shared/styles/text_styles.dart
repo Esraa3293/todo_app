@@ -22,6 +22,19 @@ class AppStyles {
     color: AppColors.primaryColor,
   );
 
+  static TextStyle poppins18Black() => GoogleFonts.poppins(
+    fontSize: AppConstants.bodyMedFontSize,
+    fontWeight: FontWeight.w300,
+    color: Colors.black,
+  );
+
+  static TextStyle poppins18White() =>
+      GoogleFonts.poppins(
+        fontSize: AppConstants.bodyMedFontSize,
+        fontWeight: FontWeight.w300,
+        color: Colors.white,
+      );
+
   static TextStyle roboto12Black() => GoogleFonts.roboto(
     fontSize: AppConstants.bodySmallFontSize,
     fontWeight: FontWeight.normal,
