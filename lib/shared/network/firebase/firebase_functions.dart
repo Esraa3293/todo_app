@@ -34,6 +34,13 @@ class FirebaseFunctions {
         .snapshots();
   }
 
+  static getCompletedTasks() {
+    var collection = getTasksCollection();
+    return collection
+        .where("userId", isEqualTo: FirebaseAuth.instance.currentUser!.uid)
+        .where("status", isEqualTo: "true");
+  }
+
   static Future<void> deleteTask(String id) {
     return getTasksCollection().doc(id).delete();
   }
