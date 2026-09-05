@@ -3,6 +3,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:todo/models/task_model.dart';
 import 'package:todo/screens/widgets/task_item.dart';
+import 'package:todo/screens/widgets/tasks_summary_chart.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 
 class TasksTab extends StatefulWidget {
@@ -36,29 +37,46 @@ class _TasksTabState extends State<TasksTab> {
           // selectableDayPredicate: (date) => date.day != 23,
           locale: 'en_ISO',
         ),
-        StreamBuilder(
-          stream: FirebaseFunctions.getTasksFromFireStore(selectedDate),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            }
-            if (snapshot.hasError) {
-              return Center(child: Text("Something went wrong"));
-            }
-            List<TaskModel> tasks =
-                snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
+        Expanded(
+          child: StreamBuilder(
+            stream: FirebaseFunctions.getTasksFromFireStore(selectedDate),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasError) {
+                return Center(child: Text("Something went wrong"));
+              }
+              List<TaskModel> tasks =
+                  snapshot.data?.docs.map((e) => e.data()).toList() ?? [];
+              List<TaskModel> done =
+                  snapshot.data?.docs
+                      .map((e) => e.data())
+                      .where((task) => task.status)
+                      .toList() ??
+                      [];
 
-            if (tasks.isEmpty) {
-              return Center(child: Text("noTasks".tr()));
-            }
-            return Expanded(
-              child: ListView.builder(
-                itemBuilder: (context, index) =>
-                    TaskItem(taskModel: tasks[index]),
-                itemCount: tasks.length,
-              ),
-            );
-          },
+              if (tasks.isEmpty) {
+                return Center(child: Text("noTasks".tr()));
+              }
+              return Column(
+                children: [
+                  TasksSummaryChart(
+                    totalTasksCount: tasks.length,
+                    completedTasksCount: done.length,
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                      itemBuilder: (context, index) =>
+                          TaskItem(taskModel: tasks[index]),
+                      itemCount: tasks.length,
+                      // shrinkWrap: true,
+                    ),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
       ],
     );
