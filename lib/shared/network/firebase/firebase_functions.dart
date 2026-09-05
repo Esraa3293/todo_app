@@ -51,7 +51,6 @@ class FirebaseFunctions {
 
   static Future<UserModel?> createAccount(
     String name,
-    int age,
     String email,
     String password,
     Function created,
@@ -62,7 +61,6 @@ class FirebaseFunctions {
       UserModel userModel = UserModel(
         id: credential.user!.uid,
         name: name,
-        age: age,
         email: email,
       );
       addUsersToFireStore(userModel).then((value) {

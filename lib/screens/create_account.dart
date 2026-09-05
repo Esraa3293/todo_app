@@ -90,22 +90,6 @@ class _CreateAccountState extends State<CreateAccount> {
                         ),
                         SizedBox(height: 10.h),
                         TextFormField(
-                          controller: ageController,
-                          decoration: InputDecoration(
-                            label: Text(context.tr('age')),
-                          ),
-                          keyboardType: TextInputType.number,
-                          style: Theme.of(context).textTheme.displayMedium,
-                          cursorColor: Theme.of(context).colorScheme.primary,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter age";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10.h),
-                        TextFormField(
                           controller: emailController,
                           decoration: InputDecoration(
                             label: Text(context.tr('emailAddress')),
@@ -172,7 +156,6 @@ class _CreateAccountState extends State<CreateAccount> {
                               try {
                                 await FirebaseFunctions.createAccount(
                                   nameController.text.trim(),
-                                  int.parse(ageController.text.trim()),
                                   emailController.text.trim(),
                                   passwordController.text,
                                   (user) {
