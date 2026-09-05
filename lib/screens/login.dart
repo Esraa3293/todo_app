@@ -7,13 +7,34 @@ import 'package:todo/providers/auth_service.dart';
 import 'package:todo/screens/create_account.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   static const String routeName = "login";
-  var formKey = GlobalKey<FormState>();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
 
   LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final formKey = GlobalKey<FormState>();
+  var emailController;
+  var passwordController;
+  bool isObscure = true;
+
+  @override
+  void initState() {
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,35 +54,26 @@ class LoginScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Image.asset(
-                            "assets/images/login_bg.png", fit: BoxFit.fill),
+                          "assets/images/login_bg.png",
+                          fit: BoxFit.fill,
+                        ),
                         SizedBox(height: 4.h),
                         Text(
                           context.tr('login'),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyLarge
+                          style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
-                          ),
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                         SizedBox(height: 20.h),
                         TextFormField(
                           controller: emailController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('emailAddress'))),
+                          decoration: InputDecoration(
+                            label: Text(context.tr('emailAddress')),
+                          ),
                           keyboardType: TextInputType.emailAddress,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+                          style: Theme.of(context).textTheme.displayMedium,
+                          cursorColor: Theme.of(context).colorScheme.primary,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter email";
@@ -78,26 +90,29 @@ class LoginScreen extends StatelessWidget {
                         SizedBox(height: 10.h),
                         TextFormField(
                           controller: passwordController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('password'))),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
-                          obscureText: true,
+                          style: Theme.of(context).textTheme.displayMedium,
+                          cursorColor: Theme.of(context).colorScheme.primary,
+                          obscureText: isObscure,
+                          decoration: InputDecoration(
+                            label: Text(context.tr('password')),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                isObscure = !isObscure;
+                                setState(() {});
+                              },
+                              icon: Icon(
+                                isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter password";
                             }
-                            if (value.length < 6) {
-                              return "Please enter at least 6 characters";
-                            }
                             bool passwordValid = RegExp(
-                              r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$",
+                              r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$",
                             ).hasMatch(value);
                             if (!passwordValid) {
                               return "Please enter valid password";
@@ -109,10 +124,18 @@ class LoginScreen extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) =>
+                                    Center(child: CircularProgressIndicator()),
+                              );
                               await FirebaseFunctions.login(
-                                emailController.text,
+                                emailController.text.trim(),
                                 passwordController.text,
-                                    (user) {
+                                (user) {
+                                  Navigator.pop(context);
+
                                   Provider.of<AuthService>(
                                     context,
                                     listen: false,
@@ -122,23 +145,24 @@ class LoginScreen extends StatelessWidget {
                                     HomeLayout.routeName,
                                   );
                                 },
-                                    (value) {
+                                (value) {
+                                  Navigator.pop(context);
+
                                   showDialog(
                                     context: context,
                                     barrierDismissible: false,
-                                    builder: (context) =>
-                                        AlertDialog(
-                                          title: Text("Error"),
-                                          content: Text(value),
-                                          actions: [
-                                            ElevatedButton(
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                              child: Text("Ok"),
-                                            ),
-                                          ],
+                                    builder: (context) => AlertDialog(
+                                      title: Text("Error"),
+                                      content: Text(value),
+                                      actions: [
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: Text("Ok"),
                                         ),
+                                      ],
+                                    ),
                                   );
                                 },
                               );
@@ -155,10 +179,7 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   Text(
                     context.tr('dontHaveAnAccount?'),
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   TextButton(
                     onPressed: () {
@@ -170,10 +191,7 @@ class LoginScreen extends StatelessWidget {
                     child: Text(
                       context.tr('createAccount'),
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),

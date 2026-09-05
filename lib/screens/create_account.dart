@@ -7,15 +7,40 @@ import 'package:todo/providers/auth_service.dart';
 import 'package:todo/screens/login.dart';
 import 'package:todo/shared/network/firebase/firebase_functions.dart';
 
-class CreateAccount extends StatelessWidget {
+class CreateAccount extends StatefulWidget {
   static const String routeName = "createAccount";
-  var formKey = GlobalKey<FormState>();
-  var nameController = TextEditingController();
-  var ageController = TextEditingController();
-  var emailController = TextEditingController();
-  var passwordController = TextEditingController();
 
   CreateAccount({super.key});
+
+  @override
+  State<CreateAccount> createState() => _CreateAccountState();
+}
+
+class _CreateAccountState extends State<CreateAccount> {
+  final formKey = GlobalKey<FormState>();
+  var nameController;
+  var ageController;
+  var emailController;
+  var passwordController;
+  bool isObscure = true;
+
+  @override
+  void initState() {
+    nameController = TextEditingController();
+    ageController = TextEditingController();
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    nameController.dispose();
+    ageController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,31 +67,20 @@ class CreateAccount extends StatelessWidget {
                         SizedBox(height: 4.h),
                         Text(
                           context.tr('createAccount'),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .bodyLarge
+                          style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
-                            color: Theme
-                                .of(context)
-                                .colorScheme
-                                .primary,
-                          ),
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
                         ),
                         SizedBox(height: 20.h),
                         TextFormField(
                           controller: nameController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('name'))),
+                          decoration: InputDecoration(
+                            label: Text(context.tr('name')),
+                          ),
                           keyboardType: TextInputType.text,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+                          style: Theme.of(context).textTheme.displayMedium,
+                          cursorColor: Theme.of(context).colorScheme.primary,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter name";
@@ -76,39 +90,13 @@ class CreateAccount extends StatelessWidget {
                         ),
                         SizedBox(height: 10.h),
                         TextFormField(
-                          controller: ageController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('age'))),
-                          keyboardType: TextInputType.number,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return "Please enter age";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 10.h),
-                        TextFormField(
                           controller: emailController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('emailAddress'))),
+                          decoration: InputDecoration(
+                            label: Text(context.tr('emailAddress')),
+                          ),
                           keyboardType: TextInputType.emailAddress,
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
+                          style: Theme.of(context).textTheme.displayMedium,
+                          cursorColor: Theme.of(context).colorScheme.primary,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter email";
@@ -125,26 +113,29 @@ class CreateAccount extends StatelessWidget {
                         SizedBox(height: 10.h),
                         TextFormField(
                           controller: passwordController,
-                          decoration: InputDecoration(label: Text(
-                              context.tr('password'))),
-                          style: Theme
-                              .of(context)
-                              .textTheme
-                              .displayMedium,
-                          cursorColor: Theme
-                              .of(context)
-                              .colorScheme
-                              .primary,
-                          obscureText: true,
+                          style: Theme.of(context).textTheme.displayMedium,
+                          cursorColor: Theme.of(context).colorScheme.primary,
+                          obscureText: isObscure,
+                          decoration: InputDecoration(
+                            label: Text(context.tr('password')),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                isObscure = !isObscure;
+                                setState(() {});
+                              },
+                              icon: Icon(
+                                isObscure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                            ),
+                          ),
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return "Please enter password";
                             }
-                            if (value.length < 6) {
-                              return "Please enter at  least 6 characters";
-                            }
                             bool passwordValid = RegExp(
-                              r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$",
+                              r"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$",
                             ).hasMatch(value);
                             if (!passwordValid) {
                               return "Please enter valid password";
@@ -156,22 +147,46 @@ class CreateAccount extends StatelessWidget {
                         ElevatedButton(
                           onPressed: () async {
                             if (formKey.currentState!.validate()) {
-                              await FirebaseFunctions.createAccount(
-                                nameController.text,
-                                int.parse(ageController.text),
-                                emailController.text,
-                                passwordController.text,
-                                    (user) {
-                                  Provider.of<AuthService>(
-                                    context,
-                                    listen: false,
-                                  ).updateUser(user);
-                                  Navigator.pushReplacementNamed(
-                                    context,
-                                    HomeLayout.routeName,
-                                  );
-                                },
+                              showDialog(
+                                context: context,
+                                barrierDismissible: false,
+                                builder: (context) =>
+                                    Center(child: CircularProgressIndicator()),
                               );
+                              try {
+                                await FirebaseFunctions.createAccount(
+                                  nameController.text.trim(),
+                                  emailController.text.trim(),
+                                  passwordController.text,
+                                  (user) {
+                                    Navigator.pop(context);
+
+                                    Provider.of<AuthService>(
+                                      context,
+                                      listen: false,
+                                    ).updateUser(user);
+                                    Navigator.pushReplacementNamed(
+                                      context,
+                                      HomeLayout.routeName,
+                                    );
+                                  },
+                                );
+                              } catch (e) {
+                                Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: Text("Error"),
+                                    content: Text(e.toString()),
+                                    actions: [
+                                      ElevatedButton(
+                                        onPressed: () => Navigator.pop(context),
+                                        child: Text("Ok"),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Text(context.tr('submit')),
@@ -185,10 +200,7 @@ class CreateAccount extends StatelessWidget {
                 children: [
                   Text(
                     context.tr('haveAnAccount?'),
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .bodySmall,
+                    style: Theme.of(context).textTheme.bodySmall,
                   ),
                   TextButton(
                     onPressed: () {
@@ -200,10 +212,7 @@ class CreateAccount extends StatelessWidget {
                     child: Text(
                       context.tr('login'),
                       style: TextStyle(
-                        color: Theme
-                            .of(context)
-                            .colorScheme
-                            .primary,
+                        color: Theme.of(context).colorScheme.primary,
                       ),
                     ),
                   ),
